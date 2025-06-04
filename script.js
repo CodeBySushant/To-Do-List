@@ -1,12 +1,15 @@
+// Retrieve saved items from localStorage or initialize an empty array
 const itemsArray = localStorage.getItem("items") ? JSON.parse(localStorage.getItem("items")) : []
 
 console.log(itemsArray)
 
+// Add new item on "Enter" button click
 document.querySelector("#enter").addEventListener("click", () => {
     const item = document.querySelector("#item")
     createItem(item)
 })
 
+// Render all to-do items from itemsArray
 function displayItems(){
     let items = ""
     for(let i = 0; i < itemsArray.length; i++){
@@ -24,13 +27,16 @@ function displayItems(){
         </div>
     </div>`
     }
+    // Inject the generated HTML into the to-do list container
     document.querySelector(".to-do-list").innerHTML = items
+    // Set up event listeners for all action buttons
     activateDeleteListeners()
     activateEditListeners()
     activateSaveListeners()
     activateCancelListeners()
 }
 
+// Attach click event to delete buttons
 function activateDeleteListeners(){
     let deleteBtn = document.querySelectorAll(".deleteBtn")
     deleteBtn.forEach((db, i) => {
@@ -38,6 +44,7 @@ function activateDeleteListeners(){
     })
 }
 
+// Attach click event to edit buttons to enable editing
 function activateEditListeners(){
     const editBtn = document.querySelectorAll(".editBtn")
     const updateController = document.querySelectorAll(".update-controller")
@@ -50,6 +57,7 @@ function activateEditListeners(){
     })
 }
 
+// Attach click event to save buttons to update items
 function activateSaveListeners(){
     const saveBtn = document.querySelectorAll(".saveBtn")
     const inputs = document.querySelectorAll(".input-controller textarea")
@@ -60,6 +68,7 @@ function activateSaveListeners(){
     })
 }
 
+// Attach click event to cancel buttons to revert UI state
 function activateCancelListeners() {
     const cancelBtn = document.querySelectorAll(".cancelBtn");
     const updateController = document.querySelectorAll(".update-controller");
@@ -73,33 +82,36 @@ function activateCancelListeners() {
     });
 }
 
-
+// Update item content and save to localStorage
 function updateItem(text, i){
     itemsArray[i] = text
     localStorage.setItem("items", JSON.stringify(itemsArray))
     location.reload()
 }
 
-
-
+// Delete item and update localStorage
 function deleteItem(i){
     itemsArray.splice(i, 1)
     localStorage.setItem("items", JSON.stringify(itemsArray))
     location.reload()
 }
 
+// Create a new item and store it
 function createItem(item){
     itemsArray.push(item.value)
     localStorage.setItem("items", JSON.stringify(itemsArray))
     location.reload()
 }
 
+
+// Display current date in header
 function displayDate(){
     let date = new Date()
     date = date.toString().split(" ")
     document.querySelector("#date").innerHTML = date[1] + " " + date[2] + " " + date[3]
 }
 
+// Run on page load
 window.onload = function(){
     displayDate()
     displayItems()
